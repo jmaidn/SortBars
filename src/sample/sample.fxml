@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="650.0" minWidth="1200.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="650.0" minWidth="1200.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <opaqueInsets>
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
    </opaqueInsets>
@@ -17,7 +17,7 @@
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
    </padding>
    <children>
-      <AnchorPane layoutX="14.0" layoutY="217.0" prefHeight="419.0" prefWidth="1176.0" />
+      <AnchorPane fx:id="apChart" layoutX="14.0" layoutY="217.0" prefHeight="419.0" prefWidth="1176.0" />
       <FlowPane layoutX="14.0" layoutY="14.0" prefHeight="80.0" prefWidth="300.0">
          <children>
             <Label text="Anzahl Balken">
@@ -25,12 +25,12 @@
                   <Insets left="10.0" top="30.0" />
                </FlowPane.margin>
             </Label>
-            <Slider prefHeight="14.0" prefWidth="166.0">
+            <Slider fx:id="sldBars" majorTickUnit="20.0" min="3.0" minorTickCount="0" prefHeight="14.0" prefWidth="166.0" showTickLabels="true">
                <FlowPane.margin>
                   <Insets left="10.0" top="30.0" />
                </FlowPane.margin>
             </Slider>
-            <Label text="Anz">
+            <Label fx:id="lblBarsOut" text="">
                <FlowPane.margin>
                   <Insets left="10.0" top="30.0" />
                </FlowPane.margin>
@@ -44,12 +44,12 @@
                   <Insets left="10.0" top="30.0" />
                </FlowPane.margin>
             </Label>
-            <Slider prefHeight="14.0" prefWidth="143.0">
+            <Slider fx:id="sldDelay" majorTickUnit="10.0" max="50.0" minorTickCount="0" prefHeight="14.0" prefWidth="143.0" showTickLabels="true">
                <FlowPane.margin>
                   <Insets left="10.0" top="30.0" />
                </FlowPane.margin>
             </Slider>
-            <Label text="ms">
+            <Label fx:id="lblDelayOut" text="ms">
                <FlowPane.margin>
                   <Insets left="10.0" top="30.0" />
                </FlowPane.margin>
@@ -58,7 +58,7 @@
       </FlowPane>
       <ButtonBar layoutX="340.0" layoutY="34.0" prefHeight="43.0" prefWidth="124.0">
         <buttons>
-          <Button mnemonicParsing="false" prefHeight="23.0" prefWidth="100.0" text="neu Generieren">
+          <Button fx:id="btnRegenerate" mnemonicParsing="false" prefHeight="23.0" prefWidth="100.0" text="neu Generieren">
                <padding>
                   <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                </padding>
@@ -73,13 +73,13 @@
       </ButtonBar>
       <ButtonBar layoutX="500.0" layoutY="24.0" prefHeight="61.0" prefWidth="209.0">
          <buttons>
-            <Button mnemonicParsing="false" prefHeight="23.0" prefWidth="100.0" text="MergeSort">
+            <Button fx:id="btnMergeSort" mnemonicParsing="false" prefHeight="23.0" prefWidth="100.0" text="MergeSort">
                <padding>
                   <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                </padding>
             </Button>
-            <Button mnemonicParsing="false" text="QuikSort" />
-            <Button mnemonicParsing="false" text="dont use" />
+            <Button fx:id="btnQuicksort" mnemonicParsing="false" text="QuikSort" />
+            <Button fx:id="btnPrint" mnemonicParsing="false" text="Print" />
          </buttons>
          <opaqueInsets>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -88,7 +88,7 @@
             <Insets right="30.0" />
          </padding>
       </ButtonBar>
-      <ProgressBar layoutX="856.0" layoutY="45.0" prefWidth="200.0" progress="0.0" />
+      <ProgressBar fx:id="pbProgess" layoutX="856.0" layoutY="45.0" prefWidth="200.0" progress="0.0" />
       <Label layoutX="795.0" layoutY="47.0" text="Progress" />
    </children>
 </AnchorPane>
