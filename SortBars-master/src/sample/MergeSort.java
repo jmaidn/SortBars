@@ -1,6 +1,7 @@
 package sample;
 
 import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 
 class MergeSort implements Runnable {
@@ -8,6 +9,7 @@ class MergeSort implements Runnable {
     IntegerProperty ArrayIndex;
     int sizeValid;
     private static long delay;
+    private static BooleanProperty sldAccess;
 
     public static void setDelay(int time){
         delay  = time;
@@ -16,10 +18,13 @@ class MergeSort implements Runnable {
     void rest() throws InterruptedException {
             Thread.sleep(delay);
     }
+    static void getAccessProperty(BooleanProperty Access){sldAccess = Access;}
+
     MergeSort(IntegerProperty[] arrInpt, IntegerProperty ArrayIndex,int sizeValid) {
         arrInt = arrInpt;
         this.ArrayIndex = ArrayIndex;
         this.sizeValid = sizeValid;
+
     }
 
     // Merges two subarrays of arr[].
@@ -116,11 +121,15 @@ class MergeSort implements Runnable {
     }
     @Override
     public void run() {
+        sldAccess.setValue(true);
         try {
             sort(0,sizeValid);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }finally {
+            sldAccess.setValue(false);
         }
+
     }
 
 }

@@ -1,14 +1,13 @@
 package sample;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.Slider;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
@@ -21,6 +20,8 @@ public class Controller {
 
     private MergeSort task;
     private QuickSort task2;
+    public BooleanProperty sldAccess = new SimpleBooleanProperty();
+
 
     @FXML
     public AnchorPane apChart;
@@ -44,7 +45,7 @@ public class Controller {
     public Slider sldBars;
 
     @FXML
-    public void initialize(){
+    public void initialize() {
 
         pai = Main.getPaiModel();
         cm = Main.getCmModel();
@@ -61,13 +62,16 @@ public class Controller {
         sldDelay.setMin(Main.getDelayMin());
         sldDelay.setMajorTickUnit(Main.getDelayTic());
 
+        MergeSort.getAccessProperty(sldAccess);
+        QuickSort.getAccessProperty(sldAccess);
+
 
         sldBars.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number oldVal, Number newVal) {
                 int iNewValue = (int) Math.floor(newVal.doubleValue());
-                int iOldValue = (int)Math.floor(oldVal.doubleValue());
-                lblBarsOut.setText(String.format("%d",iNewValue));
+                int iOldValue = (int) Math.floor(oldVal.doubleValue());
+                lblBarsOut.setText(String.format("%d", iNewValue));
                 pai.setArray(iNewValue);
             }
         });
@@ -76,70 +80,72 @@ public class Controller {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number oldVal, Number newVal) {
                 int iNewValue = (int) Math.floor(newVal.doubleValue());
-               MergeSort.setDelay(iNewValue);
-               QuickSort.setDelay(iNewValue);
-               lblDelayOut.setText(String.format("%d",iNewValue));
+                MergeSort.setDelay(iNewValue);
+                QuickSort.setDelay(iNewValue);
+                lblDelayOut.setText(String.format("%d", iNewValue));
             }
         });
 
 
-       pai.getSizeValidValuesProperty().addListener((obs,old,nevv)->{
+        pai.getSizeValidValuesProperty().addListener((obs, old, nevv) -> {
 
-           apChart.getChildren().clear();
-           cm = new ChartModel((int)nevv,pai.getValidArrayAsDouble());
-           apChart.getChildren().addAll(cm.getVB());
+            apChart.getChildren().clear();
+            cm = new ChartModel((int) nevv, pai.getValidArrayAsDouble());
+            apChart.getChildren().addAll(cm.getVB());
 
-       });
+        });
+        btnMergeSort.setOnAction(event -> {
 
-       btnMergeSort.setOnAction(event->{
-
-            task.setParams(pai.arrayProperty(),pai.getIndexProperty(),pai.getValidSize()-1);
+            task.setParams(pai.arrayProperty(), pai.getIndexProperty(), pai.getValidSize() - 1);
             Thread thread = new Thread(task);
             thread.setDaemon(true);
             thread.start();
-       });
+        });
 
-        btnPrint.setOnAction(event->{
+        btnPrint.setOnAction(event -> {
             pai.printArray();
         });
 
-        btnRegenerate.setOnAction(event ->{
-            pai.setArray(pai.getValidSize()-1);
-            pai.setArray(pai.getValidSize()+1);
+        btnRegenerate.setOnAction(event -> {
+            pai.setArray(pai.getValidSize() - 1);
+            pai.setArray(pai.getValidSize() + 1);
         });
 
-        btnQuicksort.setOnAction(event->{
-            task2.setParams(pai.arrayProperty(),pai.getIndexProperty(),pai.getValidSize()-1);
+        btnQuicksort.setOnAction(event -> {
+            task2.setParams(pai.arrayProperty(), pai.getIndexProperty(), pai.getValidSize() - 1);
             Thread thread = new Thread(task2);
             thread.setDaemon(true);
             thread.start();
 
+
         });
 
 
-        for(int i=0;i<listener.length;i++){
-            listener[i].addListener((obs,old, nevv)->{
+        for (int i = 0; i < listener.length; i++) {
+            listener[i].addListener((obs, old, nevv) -> {
                 int iNewValue = (int) Math.floor(nevv.doubleValue());
-                if(pai.getIndex()<pai.getValidSize()) {
+                if (pai.getIndex() < pai.getValidSize()) {
                     cm.setVBoxIndivHeight(pai.getIndex(), (int) iNewValue);
                 }
             });
         }
 
-       pai.getIndexProperty().addListener((obs,old,nevv)->{
-           int iNewValue = (int) Math.floor(nevv.doubleValue());
-           int iOldValue = (int)Math.floor(old.doubleValue());
-               cm.setStyle(iNewValue);
-           if(iOldValue<pai.getValidSize()) {
-               cm.setStyleOld(iOldValue);
-           }
+        pai.getIndexProperty().addListener((obs, old, nevv) -> {
+            int iNewValue = (int) Math.floor(nevv.doubleValue());
+            int iOldValue = (int) Math.floor(old.doubleValue());
+            cm.setStyle(iNewValue);
+            if (iOldValue < pai.getValidSize()) {
+                cm.setStyleOld(iOldValue);
+            }
 
         });
 
-
+        sldAccess.addListener((obs, old, nevv) -> {
+            sldBars.setDisable(nevv);
+            sldDelay.setDisable(nevv);
+        });
 
     }
-
 
 
 }

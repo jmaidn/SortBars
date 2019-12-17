@@ -1,6 +1,7 @@
 package sample;
 
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 
 // Java program for implementation of QuickSort
@@ -9,6 +10,7 @@ class QuickSort implements Runnable{
     IntegerProperty ArrayIndex;
     int sizeValid;
     private static long delay;
+    private static BooleanProperty sldAccess;
 
     void rest() throws InterruptedException {
         Thread.sleep(delay);
@@ -16,6 +18,8 @@ class QuickSort implements Runnable{
     public static void setDelay(int time){
         delay  = time;
     }
+
+    static void getAccessProperty(BooleanProperty Access){sldAccess = Access;}
 
     QuickSort(IntegerProperty[] arrInpt, IntegerProperty ArrayIndex,int sizeValid) {
         arrInt = arrInpt;
@@ -79,10 +83,13 @@ class QuickSort implements Runnable{
     }
     // Driver program
     public  void run() {
+        sldAccess.setValue(true);
         try {
-            sort(0, sizeValid);
+            sort(0,sizeValid);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }finally {
+            sldAccess.setValue(false);
         }
     }
 }
